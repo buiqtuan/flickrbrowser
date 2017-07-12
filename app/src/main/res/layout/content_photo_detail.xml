@@ -48,7 +48,7 @@
                     android:text="TextView" />
 
                 <TextView
-                    android:id="@+id/photoText"
+                    android:id="@+id/photoTags"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"

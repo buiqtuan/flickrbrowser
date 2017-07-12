@@ -1,5 +1,6 @@
 package com.example.tuanbq.flickrbrower;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,10 +14,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements GetFlickrJsonData.OnDataAvailable, RecyclerItemClickListener.OnRecyclerClickListener{
+public class MainActivity extends BaseActivity implements GetFlickrJsonData.OnDataAvailable, RecyclerItemClickListener.OnRecyclerClickListener{
     public static final String TAG = "MainActivity";
     private FlickrRecyclerViewAdapter mFlickrRecyclerViewAdapter;
 
@@ -24,8 +26,8 @@ public class MainActivity extends AppCompatActivity implements GetFlickrJsonData
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+        activateToolBar(false);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -35,14 +37,7 @@ public class MainActivity extends AppCompatActivity implements GetFlickrJsonData
         mFlickrRecyclerViewAdapter = new FlickrRecyclerViewAdapter(new ArrayList<Photo>(), this);
         recyclerView.setAdapter(mFlickrRecyclerViewAdapter);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
     }
 
     @Override
@@ -94,6 +89,10 @@ public class MainActivity extends AppCompatActivity implements GetFlickrJsonData
     @Override
     public void onItemLongClick(View view, int pos) {
         Log.d(TAG, "onItemLongClick starts");
-        Toast.makeText(MainActivity.this, "Long tap at position " + pos, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(MainActivity.this, "Long tap at position " + pos, Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(this, PhotoDetailActivity.class);
+        //Convert object to byte stream to transfer data between activities
+        i.putExtra(PHOTO_TRANSFER, mFlickrRecyclerViewAdapter.getPhoto(pos));
+        startActivity(i);
     }
 }

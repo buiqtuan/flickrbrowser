@@ -1,29 +1,38 @@
 package com.example.tuanbq.flickrbrower;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-public class PhotoDetailActivity extends AppCompatActivity {
+import com.squareup.picasso.Picasso;
+
+public class PhotoDetailActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        activateToolBar(true);
+
+        Intent i = getIntent();
+        Photo photo = (Photo) i.getSerializableExtra(PHOTO_TRANSFER);
+        if (photo != null) {
+            TextView photoTitle = (TextView) findViewById(R.id.photoTitle);
+            TextView photoAuthor = (TextView) findViewById(R.id.photoAuthor);
+            TextView photoTags = (TextView) findViewById(R.id.photoTags);
+
+            photoTitle.setText("Title: " + photo.getmTitle());
+            photoAuthor.setText("Author: " + photo.getmAuthor());
+            photoTags.setText("Tags: " + photo.getmTag());
+
+            ImageView photoImage = (ImageView) findViewById(R.id.photoImage);
+            Picasso.with(this).load(photo.getmLink())
+                    .error(R.drawable.placeholder)
+                    .placeholder(R.drawable.placeholder)
+                    .into(photoImage);
+        }
     }
 
 }

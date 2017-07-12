@@ -1,10 +1,14 @@
 package com.example.tuanbq.flickrbrower;
 
+import java.io.Serializable;
+
 /**
  * Created by tuanbq on 6/30/2017.
  */
 
-public class Photo {
+public class Photo implements Serializable{
+
+    private static final long serialVersionUID = 1L;
     private String mTitle;
     private String mAuthor;
     private String mAuthorId;
