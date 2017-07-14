@@ -1,7 +1,9 @@
 package com.example.tuanbq.flickrbrower;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -43,9 +45,15 @@ public class MainActivity extends BaseActivity implements GetFlickrJsonData.OnDa
     @Override
     protected void onResume() {
         super.onResume();
-        GetFlickrJsonData getFlickrJsonData = new GetFlickrJsonData("http://api.flickr.com/services/feeds/photos_public.gne", "en-us", true, this);
-        //getFlickrJsonData.executaeOnSameThread("android, nougat");
-        getFlickrJsonData.execute("android, nougat");
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String queryStr = sharedPreferences.getString(FLICKR_QUERY,"");
+
+        if (queryStr.length() > 0) {
+            GetFlickrJsonData getFlickrJsonData = new GetFlickrJsonData("http://api.flickr.com/services/feeds/photos_public.gne", "en-us", true, this);
+            //getFlickrJsonData.executaeOnSameThread("android, nougat");
+            getFlickrJsonData.execute(queryStr);
+        }
     }
 
     @Override
@@ -64,6 +72,12 @@ public class MainActivity extends BaseActivity implements GetFlickrJsonData.OnDa
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+
+        if (id == R.id.actionSearch) {
+            Intent i = new Intent(this, SearchActivity.class);
+            startActivity(i);
             return true;
         }
 

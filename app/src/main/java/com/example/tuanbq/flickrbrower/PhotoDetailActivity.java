@@ -1,6 +1,7 @@
 package com.example.tuanbq.flickrbrower;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
